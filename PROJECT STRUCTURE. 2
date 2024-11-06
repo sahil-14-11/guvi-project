@@ -1,0 +1,69 @@
+
+1. data/ Directory:
+raw/: Contains raw email data, typically in text files, CSV, or JSON format. These would include both labeled spam and ham (non-spam) emails.
+processed/: After preprocessing (tokenization, stopword removal, etc.), the cleaned data will be saved here.
+labeled/: Contains labeled data, such as CSVs where each email is labeled as either spam or ham.
+
+
+2. lib/ Directory:
+This folder contains any external libraries (JARs) needed for the project. For example, if you're using Weka for machine learning tasks, you might include weka.jar in this folder. If using Maven, dependencies can be managed in pom.xml.
+
+
+3. src/ Directory:
+This is where most of your Java code resides.
+
+main/: Contains the core application code.
+Main.java: The main entry point of the application, where the spam filter is initialized, trained, and used to classify new emails.
+SpamFilterApp.java: This class handles overall application logic (e.g., initializing models, managing inputs, starting the classification process).
+classifier/:
+SpamClassifier.java: The main spam filter class, responsible for training and predicting based on different classifiers (e.g., Naive Bayes, SVM).
+NaiveBayesClassifier.java: A class specifically for Naive Bayes spam classification.
+SVMClassifier.java: An optional class for using Support Vector Machines (SVM) for spam classification.
+preprocessing/:
+TextPreprocessor.java: Code for text preprocessing, like tokenization, removing stopwords, lemmatization, and stemming.
+FeatureExtractor.java: This class is responsible for converting the raw text into numerical features, such as TF-IDF, Bag-of-Words, etc.
+DataLoader.java: Loads the data (CSV, text, or JSON) and transforms it into a suitable format for training.
+utils/:
+Metrics.java: Includes helper functions to evaluate the model (e.g., accuracy, precision, recall).
+FileUtils.java: Contains utility functions for file operations, such as reading data from files and saving logs.
+
+
+4. test/ Directory:
+Contains unit tests for each module. For example:
+
+SpamClassifierTest.java: Tests related to the spam classification logic.
+NaiveBayesClassifierTest.java: Tests for Naive Bayes classifier.
+TextPreprocessorTest.java: Unit tests for text preprocessing functions.
+FeatureExtractorTest.java: Unit tests for the feature extraction functions.
+MetricsTest.java: Unit tests for evaluating metrics.
+FileUtilsTest.java: Tests for file handling utilities.
+
+
+5. target/ Directory:
+This is the directory where compiled .class files or your built JAR file will be placed after running Maven (or another build tool).
+
+6. pom.xml:
+The Maven project configuration file, where you'll define dependencies (e.g., Weka, JUnit for testing, etc.), build plugins, and project metadata. Here's an example of adding Weka and JUnit dependencies in pom.xml:
+
+xml
+Copy code
+
+7. config.properties:
+A configuration file where you can set various hyperparameters for your model, such as:
+ 
+Max number of features for TF-IDF
+Classifier type (Naive Bayes, SVM)
+Model hyperparameters (e.g., C value for SVM)
+
+8. logs/ Directory:
+Log files generated during training, prediction, and evaluation phases can be stored here, making it easier to debug or track model performance over time.
+
+9. README.md:
+This file provides an overview of your spam filter project, including:
+
+The problem you're solving (email spam filtering)
+Instructions on how to run the system
+Dependencies and installation steps
+An overview of how the system works (e.g., text preprocessing, model selection, evaluation).
+
+
