@@ -1,0 +1,44 @@
+PROJECT STRUCTURE
+├── data/                           # Raw, processed, and labeled data
+│   ├── raw/                        # Raw email data files (e.g., .txt, .csv)
+│   ├── processed/                  # Processed data (tokenized, cleaned, etc.)
+│   ├── labeled/                    # Labeled datasets (spam/ham)
+│   └── README.md                   # Description of datasets
+├── lib/                            # External libraries or JARs for ML (e.g., Weka, Spark)
+│   └── weka.jar                    # Example of an external library
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── com/
+│   │   │       └── spamfilter/
+│   │   │           ├── Main.java                 # Main entry point (CLI or Application)
+│   │   │           ├── SpamFilterApp.java        # Application logic (initializes classifier, loads data, etc.)
+│   │   │           ├── classifier/
+│   │   │           │   ├── SpamClassifier.java   # Main class for spam classification (model handling)
+│   │   │           │   ├── NaiveBayesClassifier.java  # A specific classifier (e.g., Naive Bayes)
+│   │   │           │   └── SVMClassifier.java     # A support vector machine classifier (optional)
+│   │   │           ├── preprocessing/
+│   │   │           │   ├── TextPreprocessor.java  # Text data cleaning (tokenization, stopwords removal)
+│   │   │           │   ├── FeatureExtractor.java  # Convert text into numerical features (e.g., TF-IDF)
+│   │   │           │   └── DataLoader.java        # Load and manage data (CSV/JSON to Java objects)
+│   │   │           └── utils/
+│   │   │               ├── Metrics.java           # Metrics for evaluation (accuracy, precision, recall)
+│   │   │               └── FileUtils.java         # File handling utilities (for reading data, writing logs)
+│   └── resources/
+│       ├── config.properties           # Configuration for model training (e.g., hyperparameters)
+│       └── logs/                       # Log files (for model training, predictions, etc.)
+├── test/                           # Unit tests
+│   ├── java/
+│   │   └── com/
+│   │       └── spamfilter/
+│   │           ├── classifier/
+│   │           │   ├── SpamClassifierTest.java    # Test class for SpamClassifier
+│   │           │   ├── NaiveBayesClassifierTest.java  # Unit test for NaiveBayesClassifier
+│   │           ├── preprocessing/
+│   │           │   ├── TextPreprocessorTest.java   # Unit test for TextPreprocessor
+│   │           │   └── FeatureExtractorTest.java   # Unit test for FeatureExtractor
+│   │           └── utils/
+│   │               ├── MetricsTest.java           # Unit test for Metrics class
+│   │               └── FileUtilsTest.java         # Unit test for FileUtils
+├── target/                           # Compiled .class files or JAR file
+├── pom.xml                           # Maven configuration (dependencies, build settings)
