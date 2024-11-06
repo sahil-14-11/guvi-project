@@ -1,0 +1,94 @@
+Key Entities in the Schema:
+1. Emails: Store the raw email content, along with metadata.
+2. Labels: Store the label (spam/ham) for each email.
+3. Models: Store details about the trained models (e.g., Naive Bayes, SVM).
+4. Features: Store the features extracted from the emails.
+5. Model_Training_Logs: Logs about each model's training process.
+5. Predictions: Store predictions made by the model for a given email.
+
+    Database Schema Design
+1. Emails Table
+This table stores the actual email content and metadata.
+
+[
+CREATE TABLE emails (
+    email_id INT PRIMARY KEY AUTO_INCREMENT,  
+    sender VARCHAR(255) NOT NULL,             
+    subject VARCHAR(255),                   
+    body TEXT NOT NULL,                      
+    received_at DATETIME DEFAULT CURRENT_TIMESTAMP,  
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP 
+);
+]
+    
+2. Labels Table
+This table stores the label for each email (spam or ham). A one-to-one relationship exists with the Emails table.
+
+
+CREATE TABLE labels (
+    label_id INT PRIMARY KEY AUTO_INCREMENT,
+    email_id INT,                            
+    label ENUM('spam', 'ham') NOT NULL,      
+    FOREIGN KEY (email_id) REFERENCES emails(email_id) ON DELETE CASCADE  
+);
+    3. Models Table
+This table stores metadata about the different models used for classification. Each model corresponds to a type of spam filter (e.g., Naive Bayes, SVM).
+
+
+CREATE TABLE models (
+    model_id INT PRIMARY KEY AUTO_INCREMENT, 
+    model_name VARCHAR(255) NOT NULL,         
+    model_type VARCHAR(255),                  
+    hyperparameters JSON,                     
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP  
+);
+    4. Features Table
+This table stores the features extracted from emails for training the model. The features could include things like word counts, TF-IDF values, etc. A many-to-many relationship may exist between Emails and Features, as one email could be associated with multiple features.
+
+
+CREATE TABLE features (
+    feature_id INT PRIMARY KEY AUTO_INCREMENT,  
+    feature_name VARCHAR(255) NOT NULL,         
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+    CREATE TABLE email_features (
+    email_id INT,                              
+    feature_id INT,                            
+    feature_value FLOAT NOT NULL,               
+    PRIMARY KEY (email_id, feature_id),        
+    FOREIGN KEY (email_id) REFERENCES emails(email_id) ON DELETE CASCADE,
+    FOREIGN KEY (feature_id) REFERENCES features(feature_id) ON DELETE CASCADE
+);
+
+
+5. Model Training Logs Table
+This table stores logs for each training session, including the model used, training data, performance metrics, etc.
+
+
+CREATE TABLE model_training_logs (
+    log_id INT PRIMARY KEY AUTO_INCREMENT,     
+    model_id INT,                               
+    training_data_size INT,
+    training_time_seconds INT,
+    accuracy FLOAT,                             
+    precision FLOAT,                            
+    recall FLOAT,                               
+    f1_score FLOAT,                             
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,  
+    FOREIGN KEY (model_id) REFERENCES models(model_id)
+);
+
+6. Predictions Table
+This table stores predictions made by the model on emails, i.e., the output of the spam classification.
+
+
+CREATE TABLE predictions (
+    prediction_id INT PRIMARY KEY AUTO_INCREMENT,  
+    email_id INT,                                  
+    model_id INT,                                  
+    predicted_label ENUM('spam', 'ham') NOT NULL,   
+    prediction_probability FLOAT,                   
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,  
+    FOREIGN KEY (email_id) REFERENCES emails(email_id),
+    FOREIGN KEY (model_id) REFERENCES models(model_id)
+);
